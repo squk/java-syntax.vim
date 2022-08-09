@@ -1,3 +1,5 @@
+" CUSTOM
+syn match   javaAnnotation	"@\([_$a-zA-Z][_$a-zA-Z0-9]*\.\)*[_$a-zA-Z][_$a-zA-Z0-9]*\>"
 "---------------------------------------------------------------------------------------------------
 sy match  javaOperator      '[+\-\~!\*/%<>=&\^|?:]'
 sy match  javaDelimiter     '[()\.\[\],;{}]'
@@ -6,8 +8,46 @@ sy match  javaFunction      '\v<%(\h|\$)%(\w|\$)*>\ze\_s*\(\_.{-}\)'
 sy match  javaType          '\v<\$*\u%(\w|\$)*>'
 sy match  javaConstant      '\v<%(\u|[_\$])%(\u|\d|[_\$])*>'
 "---------------------------------------------------------------------------------------------------
-sy match  javaComment       '//.*'                  contains=@javaTodos
-sy region javaComment       start='/\*' end='\*/'   contains=@javaTodos
+if exists("java_comment_strings")
+  syn region  javaCommentString    contained start=+"+ end=+"+ end=+$+ end=+\*/+me=s-1,he=s-1 contains=javaSpecial,javaCommentStar,javaSpecialChar,@Spell
+  syn region  javaComment2String   contained start=+"+	end=+$\|"+  contains=javaSpecial,javaSpecialChar,@Spell
+  syn match   javaCommentCharacter contained "'\\[^']\{1,6\}'" contains=javaSpecialChar
+  syn match   javaCommentCharacter contained "'\\''" contains=javaSpecialChar
+  syn match   javaCommentCharacter contained "'[^\\]'"
+  syn cluster javaCommentSpecial add=javaCommentString,javaCommentCharacter,javaNumber
+  syn cluster javaCommentSpecial2 add=javaComment2String,javaCommentCharacter,javaNumber
+endif
+syn region  javaComment		 start="/\*"  end="\*/" contains=@javaCommentSpecial,javaTodo,@Spell
+syn match   javaCommentStar	 contained "^\s*\*[^/]"me=e-1
+syn match   javaCommentStar	 contained "^\s*\*$"
+syn match   javaLineComment	 "//.*" contains=@javaCommentSpecial2,javaTodo,@Spell
+
+if !exists("java_ignore_javadoc")
+  syntax case ignore
+  " syntax coloring for javadoc comments (HTML)
+  " syntax include @javaHtml <sfile>:p:h/html.vim
+  " unlet b:current_syntax
+  " HTML enables spell checking for all text that is not in a syntax item. This
+  " is wrong for Java (all identifiers would be spell-checked), so it's undone
+  " here.
+  syntax spell default
+
+  syn region  javaDocComment	start="/\*\*"  end="\*/" keepend contains=javaCommentTitle,javaDocTags,javaDocSeeTag,javaTodo,@Spell
+  syn region  javaCommentTitle	contained matchgroup=javaDocComment start="/\*\*"   matchgroup=javaCommentTitle keepend end="\.$" end="\.[ \t\r<&]"me=e-1 end="[^{]@"me=s-2,he=s-1 end="\*/"me=s-1,he=s-1 contains=javaCommentStar,javaTodo,@Spell,javaDocTags,javaDocSeeTag
+
+  syn region javaDocTags	 contained start="{@\(link\|linkplain\|inherit[Dd]oc\|doc[rR]oot\|value\)" end="}"
+  syn match  javaDocTags	 contained "@\(param\|exception\|throws\|since\)\s\+\S\+" contains=javaDocParam
+  syn match  javaDocParam	 contained "\s\S\+"
+  syn match  javaDocTags	 contained "@\(version\|author\|return\|deprecated\|serial\|serialField\|serialData\)\>"
+  syn region javaDocSeeTag	 contained matchgroup=javaDocTags start="@see\s\+" matchgroup=NONE end="\_."re=e-1 contains=javaDocSeeTagParam
+  syn match  javaDocSeeTagParam  contained @"\_[^"]\+"\|<a\s\+\_.\{-}</a>\|\(\k\|\.\)*\(#\k\+\((\_[^)]\+)\)\=\)\=@ extend
+  syn region javaDocLinkTag	 contained matchgroup=javaDocTags start="@link\s\+" matchgroup=NONE end="\_."re=e-1 contains=javaDocLinkTagParam
+  syn match  javaDocLinkTagParam  contained @"\_[^"]\+"\|<a\s\+\_.\{-}</a>\|\(\k\|\.\)*\(#\k\+\((\_[^)]\+)\)\=\)\=@ extend
+  syntax case match
+endif
+"
+" match the special comment /**/
+syn match   javaComment		 "/\*\*/"
 "---------------------------------------------------------------------------------------------------
 sy match  javaString        '\v"%([^\\"]|\\.)*"'
 sy region javaString        start='"""\s*$' end='"""'

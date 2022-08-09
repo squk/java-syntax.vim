@@ -1,5 +1,17 @@
+" CUSTOM
+hi def link javaAnnotation       Macro
 "-------------------------------------------------
-hi def link javaComment         Comment
+hi def link javaLineComment       Comment
+hi def link javaComment           Comment
+hi def link javaCommentStar       Comment
+hi def link javaCommentString     String
+hi def link javaComment2String    String
+hi def link javaCommentCharacter  Character
+hi def link javaDocComment        Comment
+hi def link javaCommentTitle      SpecialComment
+hi def link javaDocTags           Special
+hi def link javaDocParam          Function
+hi def link javaDocSeeTagParam    Function
 "-------------------------------------------------
 hi def link javaConstant        Constant
 hi def link javaString          String
@@ -19,7 +31,7 @@ hi def link javaOperator        Operator
 hi def link javaKeyword         Keyword
 hi def link javaException       Exception
 "-------------------------------------------------
-hi def link javaPreProc         PreProc
+hi def link javaPreProc         Macro
 hi def link javaInclude         Include
 hi def link javaDefine          Define
 hi def link javaMacro           Macro
