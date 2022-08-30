@@ -55,5 +55,8 @@ hi def link javaIgnore          Ignore
 "-------------------------------------------------
 hi def link javaError           Error
 "-------------------------------------------------
-hi def link javaTodo            Todo
+" hi def link javaTodo            Todo
+hi def link javaTodoTask            Todo
+hi def link javaTodoNote            Note
+hi def link javaTodoWarn            Warn
 "-------------------------------------------------

@@ -1,5 +1,8 @@
 " CUSTOM
 syn match   javaAnnotation	"@\([_$a-zA-Z][_$a-zA-Z0-9]*\.\)*[_$a-zA-Z][_$a-zA-Z0-9]*\>"
+syn match  javaTodoTask   /\v.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment.*
+syn match  javaTodoNote   /\v.<(NOTE).*/hs=s+1 containedin=.*Comment.*
+syn match  javaTodoWarn   /\v.<(FUCK|XXX|AHH).*/hs=s+1 containedin=ALL
 "---------------------------------------------------------------------------------------------------
 sy match  javaOperator      '[+\-\~!\*/%<>=&\^|?:]'
 sy match  javaDelimiter     '[()\.\[\],;{}]'
@@ -8,7 +11,7 @@ sy match  javaFunction      '\v<%(\h|\$)%(\w|\$)*>\ze\_s*\(\_.{-}\)'
 sy match  javaType          '\v<\$*\u%(\w|\$)*>'
 sy match  javaConstant      '\v<%(\u|[_\$])%(\u|\d|[_\$])*>'
 "---------------------------------------------------------------------------------------------------
-if exists("java_comment_strings")
+" if exists("java_comment_strings")
   syn region  javaCommentString    contained start=+"+ end=+"+ end=+$+ end=+\*/+me=s-1,he=s-1 contains=javaSpecial,javaCommentStar,javaSpecialChar,@Spell
   syn region  javaComment2String   contained start=+"+	end=+$\|"+  contains=javaSpecial,javaSpecialChar,@Spell
   syn match   javaCommentCharacter contained "'\\[^']\{1,6\}'" contains=javaSpecialChar
@@ -16,11 +19,11 @@ if exists("java_comment_strings")
   syn match   javaCommentCharacter contained "'[^\\]'"
   syn cluster javaCommentSpecial add=javaCommentString,javaCommentCharacter,javaNumber
   syn cluster javaCommentSpecial2 add=javaComment2String,javaCommentCharacter,javaNumber
-endif
-syn region  javaComment		 start="/\*"  end="\*/" contains=@javaCommentSpecial,javaTodo,@Spell
+" endif
+syn region  javaComment		 start="/\*"  end="\*/" contains=@javaCommentSpecial,javaTodos,@Spell
 syn match   javaCommentStar	 contained "^\s*\*[^/]"me=e-1
 syn match   javaCommentStar	 contained "^\s*\*$"
-syn match   javaLineComment	 "//.*" contains=@javaCommentSpecial2,javaTodo,@Spell
+syn match   javaLineComment	 "//.*" contains=@javaCommentSpecial2,javaTodos,@Spell
 
 if !exists("java_ignore_javadoc")
   syntax case ignore
@@ -32,8 +35,8 @@ if !exists("java_ignore_javadoc")
   " here.
   syntax spell default
 
-  syn region  javaDocComment	start="/\*\*"  end="\*/" keepend contains=javaCommentTitle,javaDocTags,javaDocSeeTag,javaTodo,@Spell
-  syn region  javaCommentTitle	contained matchgroup=javaDocComment start="/\*\*"   matchgroup=javaCommentTitle keepend end="\.$" end="\.[ \t\r<&]"me=e-1 end="[^{]@"me=s-2,he=s-1 end="\*/"me=s-1,he=s-1 contains=javaCommentStar,javaTodo,@Spell,javaDocTags,javaDocSeeTag
+  syn region  javaDocComment	start="/\*\*"  end="\*/" keepend contains=javaCommentTitle,javaDocTags,javaDocSeeTag,javaTodos,@Spell
+  syn region  javaCommentTitle	contained matchgroup=javaDocComment start="/\*\*"   matchgroup=javaCommentTitle keepend end="\.$" end="\.[ \t\r<&]"me=e-1 end="[^{]@"me=s-2,he=s-1 end="\*/"me=s-1,he=s-1 contains=javaCommentStar,javaTodos,@Spell,javaDocTags,javaDocSeeTag
 
   syn region javaDocTags	 contained start="{@\(link\|linkplain\|inherit[Dd]oc\|doc[rR]oot\|value\)" end="}"
   syn match  javaDocTags	 contained "@\(param\|exception\|throws\|since\)\s\+\S\+" contains=javaDocParam

@@ -37,7 +37,7 @@ sy keyword javaDebug            assert
 "-----------------------------------------------------------------------------------------
 sy keyword javaError            goto const
 "-----------------------------------------------------------------------------------------
-sy keyword javaTodoTask         TODO FIXME  contained
-sy keyword javaTodoNote         NOTE        contained
-sy keyword javaTodoWarn         XXX NB      contained
+" sy keyword javaTodoTask         TODO FIXME containedin=.*Comment.*
+" sy keyword javaTodoNote         NOTE containedin=.*Comment.*
+" sy keyword javaTodoWarn         XXX FUCK containedin=.*Comment.*
 "-----------------------------------------------------------------------------------------

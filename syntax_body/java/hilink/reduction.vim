@@ -9,7 +9,7 @@ hi def link javaHexFloat        javaFloat
 "-------------------------------------------------
 hi def link javaAccessKeyword   javaKeyword
 "-------------------------------------------------
-hi def link javaTodoTask        javaTodo
-hi def link javaTodoNote        javaTodo
-hi def link javaTodoWarn        javaTodo
+" hi def link javaTodoTask        javaTodo
+" hi def link javaTodoNote        javaTodo
+" hi def link javaTodoWarn        javaTodo
 "-------------------------------------------------
