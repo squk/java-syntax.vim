@@ -1,8 +1,5 @@
 " CUSTOM
 syn match   javaAnnotation	"@\([_$a-zA-Z][_$a-zA-Z0-9]*\.\)*[_$a-zA-Z][_$a-zA-Z0-9]*\>"
-syn match  javaTodoTask   /\v.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment.*
-syn match  javaTodoNote   /\v.<(NOTE).*/hs=s+1 containedin=.*Comment.*
-syn match  javaTodoWarn   /\v.<(FUCK|XXX|AHH).*/hs=s+1 containedin=ALL
 "---------------------------------------------------------------------------------------------------
 sy match  javaOperator      '[+\-\~!\*/%<>=&\^|?:]'
 sy match  javaDelimiter     '[()\.\[\],;{}]'
@@ -76,3 +73,8 @@ sy match  javaInclude       '\v<import%(\_s+static)=>'
 sy match  javaPackagePath   '\v<%(%(\w|\$)+\_s*\.\_s*)*%(\w|\$)+>'
 \   contained contains=javaIdentifier,javaDelimiter
 "---------------------------------------------------------------------------------------------------
+" sy cluster javaComments contains=javaComment,javaLineComment,javaCommentString,javaDocComment
+sy cluster javaComments contains=.*Comment.*
+syn match  javaTodoTask   /\v.<(TODO|FIXME).*/hs=s+1 contained containedin=@javaComments
+syn match  javaTodoNote   /\v.<(NOTE).*/hs=s+1 contained containedin=@javaComments
+syn match  javaTodoWarn   /\v.<(FUCK|XXX|AHH|WARN).*/hs=s+1 containedin=ALL contained
